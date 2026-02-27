@@ -10,15 +10,15 @@
             text-align: center;
             background-color: #6a7d5e;
 			
-			dispaly: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
+            /* Correction du display pour aligner le contenu */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
 			
-			min-height: 100vh;
-			margin: 0;
-			
-			padding-top: 80px;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 80px; /* Espacement pour que le bandeau ne cache pas le contenu */
         }
 
         .btn {
@@ -30,42 +30,130 @@
             text-decoration: none;
             border-radius: 12px;
             font-size: 18px;
-            transition:all 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .btn:hover {
             filter: brightness(1.1);
-			box-shadow: 0 0 15px rgba(0, 198, 255, 0.6);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.6);
         }
-		.bandeau {
+
+        /* Bandeau en haut */
+        .bandeau {
             width: 100%;
             background-color: #6a7d5e;
             padding: 20px 0;
-            position: fixed; /* reste en haut */
+            position: fixed; /* Reste en haut */
             top: 0;
             left: 0;
+            text-align: center;
+            z-index: 10;
         }
+
         .bandeau h1 {
             margin: 0;
             color: white;
             font-size: 24px;
+            font-weight: bold;
+            transition: color 0.3s ease;
         }
-		
+
+        /* Effet lorsque l'on survole le titre */
+        .bandeau h1:hover {
+            color: #00c6ff;
+        }
+
+        /* Espacement pour que le contenu ne soit pas caché sous le bandeau */
+        #content {
+            padding-top: 120px; /* Ajuste en fonction de la taille du bandeau */
+        }
+
+        /* Sidebar (panneau latéral) */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            left: -250px; /* Cache le panneau à gauche */
+            top: 0;
+            background-color: #333;
+            padding-top: 60px;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            padding: 8px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            color: white;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        /* Style du bouton pour ouvrir la sidebar */
+        .open-btn {
+            background: none;
+            color: white;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            position: absolute;
+            left: 20px;
+            top: 15px;
+        }
     </style>
 </head>
 
 <body>
 
     <header class="bandeau">
-	<h1>Bienvenue!</h1>
-	</header>
+        <h1>Bienvenue!</h1> <!-- Suppression du lien autour du titre -->
+        <!-- Bouton pour ouvrir la sidebar -->
+        <button class="open-btn" onclick="toggleSidebar()">☰</button>
+    </header>
 
-    <a href="lesboutons.html"  class="btn">
-	    <img src="noel.png" style="width:15px;" alt="Noel">
-        DES BOUTONS DE MERDE
-    </a>
-	<p></p>
+    <!-- Panneau latéral (sidebar) -->
+    <div id="sidebar" class="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">×</button>
+        <a href="lesboutons.html">Les Boutons</a>
+        <a href="#">Autre Page</a>
+    </div>
 
+    <div id="content">
+        <a href="lesboutons.html" class="btn">
+            <img src="noel.png" style="width:15px;" alt="Noel">
+            DES BOUTONS DE MERDE
+        </a>
+    </div>
+
+    <script>
+        // Fonction pour ouvrir/fermer la sidebar
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            // Si le panneau est caché, on l'affiche
+            if (sidebar.style.left === "-250px") {
+                sidebar.style.left = "0";
+            } else {
+                sidebar.style.left = "-250px"; // Le cache
+            }
+        }
+    </script>
 
 </body>
 </html>

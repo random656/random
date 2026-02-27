@@ -70,15 +70,19 @@
 
         /* Sidebar (panneau latéral) */
         .sidebar {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            left: -250px; /* Cache le panneau à gauche */
-            top: 0;
-            background-color: #333;
-            padding-top: 60px;
-            transition: 0.3s;
-            z-index: 1000;
+           height: 100%;
+           width: 250px;
+           position: fixed;
+           left: -250px;
+           top: 0;
+           background-color: #333;
+           padding-top: 60px;
+           transition: 0.3s;
+           z-index: 1000;
+        }
+
+        .sidebar.active {
+             left: 0;
         }
 
         .sidebar a {
@@ -156,3 +160,4 @@
 </body>
 
 </html>
+

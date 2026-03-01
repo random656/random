@@ -1,114 +1,325 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vidéo du jour</title>
+<title>DAMN</title>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #6a7d5e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 80px;
+}
 
-    h1 {
-        text-align: center;
-        margin: 20px 0;
-    }
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 15px;
+    background: linear-gradient(90deg, #00c6ff, #3a7bd5);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
 
-    /* Conteneur pour chaque vidéo */
-    .video-container {
-        width: 100%;
-        max-width: 800px;
-        margin: 20px auto;
-    }
+.btn:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 15px rgba(0,198,255,0.6);
+}
 
-    .video-container iframe {
-        width: 100%;
-        aspect-ratio: 16/9;
-        border: none;
-        /* plus de position absolute ici */
-    }
+.bandeau {
+    width: 100%;
+    background-color: #6a7d5e;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+    z-index: 10;
+}
 
-    /* Popup contact */
-    .contact-popup {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 300px;
-        background: #f0f0f0;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        padding: 15px;
-        display: none; /* caché par défaut */
-        z-index: 1000;
-    }
+.bandeau h1 {
+    margin: 0;
+    color: white;
+    font-size: 24px;
+}
 
-    .contact-popup h2 {
-        margin-top: 0;
-    }
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    left: -250px;
+    top: 0;
+    background-color: #333;
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
 
-    .contact-popup form button {
-        background: linear-gradient(135deg, #4a90e2, #357ABD);
-        border: none;
-        color: white;
-        padding: 8px 15px;
-        cursor: pointer;
-        border-radius: 4px;
-        font-size: 14px;
-    }
+.sidebar.active {
+    left: 0;
+}
 
-    /* Bouton fermer séparé */
-    .close-popup {
-        position: absolute;
-        top: 10px;
-        right: 12px;
-        border: none;
-        background: none;
-        font-size: 20px;
-        cursor: pointer;
-        color: black;
-    }
+.sidebar a {
+    padding: 8px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    cursor: pointer;
+}
+
+.sidebar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.sidebar .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 36px;
+    color: white;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.open-btn {
+    background: none;
+    color: white;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    left: 20px;
+    top: 15px;
+}
+
+#content {
+    padding-top: 120px;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 16 / 9;
+    margin: 20px auto;
+}
+
+.video-container iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 12px;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 1500;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Popup */
+.contact-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: white;
+    padding: 35px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.35s;
+    z-index: 2000;
+}
+
+.contact-popup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.close-popup {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.contact-popup input,
+.contact-popup textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+.contact-popup textarea {
+    resize: none;
+    height: 120px;
+}
+
+.contact-popup button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #00c6ff, #3a7bd5);
+    color: white;
+    cursor: pointer;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: #3a7bd5;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    transition: 0.4s;
+    z-index: 3000;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+}
 </style>
 </head>
+
 <body>
 
-<h1>La vidéo du jour</h1>
+<header class="bandeau">
+    <h1>Vidéos du jour</h1>
+    <button class="open-btn" onclick="toggleSidebar()">☰</button>
+</header>
 
-<!-- Vidéos -->
-<div class="video-container">
-    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-</div>
-<div class="video-container">
-    <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
-</div>
-<div class="video-container">
-    <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
+<div id="overlay" class="overlay" onclick="closeAll()"></div>
+
+<div id="sidebar" class="sidebar">
+    <button class="close-btn" onclick="toggleSidebar()">×</button>
+    <a href="index.html">Bienvenue !</a>
+    <a href="lesboutons.html">Les boutons de merde !</a>
+    <a href="videodujour.html">Vidéos du jour</a>
+    <a onclick="openContact()">Contact</a>
 </div>
 
-<!-- Popup contact -->
-<div class="contact-popup" id="contactPopup">
-    <button class="close-popup" id="closePopup">✕</button>
-    <h2>Contact</h2>
-    <form>
-        <label>Nom:</label><br>
-        <input type="text" name="name"><br><br>
-        <label>Email:</label><br>
-        <input type="email" name="email"><br><br>
-        <button type="submit">Envoyer</button>
+<div id="content">
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/DL0bdKXRbuw?si=dgwwCxIYDJSSzt3W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/7_zp0yS0NP4?si=SobgcvnEuVb57SCr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/OWGWvulPa2o?si=tQQOQjOo6AozZybv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/wVVDiM1XnTk?si=LhJH5HqaJX1chWXC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/RY46Flsck4o?si=sHFaTBnkYapoudV8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/UVs3eSPqyTA?si=4Oj_N09cFPXJlAMC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/7gNLUeD8ePw?si=G328Y_TEy5-8J6rc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast">✅ Message envoyé !</div>
+
+<!-- Popup -->
+<div id="contactPopup" class="contact-popup">
+    <button class="close-popup" onclick="closeContact()">✕</button>
+    <h2>Contacte-moi</h2>
+    <form id="contactForm">
+        <input type="text" name="name" placeholder="Ton nom" required>
+        <input type="email" name="email" placeholder="Ton email" required>
+        <textarea name="message" placeholder="Ton message..." required></textarea>
+        <input type="text" name="_gotcha" style="display:none">
+        <button type="submit">Envoyer 🚀</button>
     </form>
 </div>
 
 <script>
-    // Afficher le popup après 2 secondes
-    setTimeout(() => {
-        document.getElementById('contactPopup').style.display = 'block';
-    }, 2000);
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const popup = document.getElementById("contactPopup");
+const form = document.getElementById("contactForm");
+const toast = document.getElementById("toast");
 
-    // Fermer le popup
-    document.getElementById('closePopup').addEventListener('click', () => {
-        document.getElementById('contactPopup').style.display = 'none';
+function toggleSidebar() {
+    sidebar.classList.toggle("active");
+}
+
+function openContact() {
+    sidebar.classList.remove("active");
+    popup.classList.add("active");
+    overlay.classList.add("active");
+}
+
+function closeContact() {
+    popup.classList.remove("active");
+    overlay.classList.remove("active");
+}
+
+function closeAll() {
+    closeContact();
+}
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeAll();
+});
+
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    await fetch("https://formspree.io/f/xnjbywdk", {
+        method: "POST",
+        body: data,
+        headers: { 'Accept': 'application/json' }
     });
+
+    form.reset();
+    closeContact();
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+});
 </script>
 
 </body>

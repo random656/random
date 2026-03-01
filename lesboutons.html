@@ -1,196 +1,289 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAMN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAMN</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #6a7d5e;
-            
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            
-            min-height: 100vh;
-            margin: 0;
-            padding-top: 80px;
-        }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #6a7d5e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 80px;
+}
 
-        .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            margin: 15px;
-            background: linear-gradient(90deg, #00c6ff, #3a7bd5);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 18px;
-            transition: all 0.3s ease;
-        }
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 15px;
+    background: linear-gradient(90deg, #00c6ff, #3a7bd5);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
 
-        .btn:hover {
-            filter: brightness(1.1);
-            box-shadow: 0 0 15px rgba(0, 198, 255, 0.6);
-        }
+.btn:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 15px rgba(0,198,255,0.6);
+}
 
-        .bandeau {
-            width: 100%;
-            background-color: #6a7d5e;
-            padding: 20px 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            text-align: center;
-            z-index: 10;
-        }
+.bandeau {
+    width: 100%;
+    background-color: #6a7d5e;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+    z-index: 10;
+}
 
-        .bandeau h1 {
-            margin: 0;
-            color: white;
-            font-size: 24px;
-        }
+.bandeau h1 {
+    margin: 0;
+    color: white;
+    font-size: 24px;
+}
 
-        .sidebar {
-            height: 100%;
-            width: 250px;
-            position: fixed;
-            left: -250px;
-            top: 0;
-            background-color: #333;
-            padding-top: 60px;
-            transition: left 0.3s ease;
-            z-index: 1000;
-        }
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    left: -250px;
+    top: 0;
+    background-color: #333;
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
 
-        .sidebar.active {
-            left: 0;
-        }
+.sidebar.active {
+    left: 0;
+}
 
-        .sidebar a {
-            padding: 8px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-            transition: 0.3s;
-        }
+.sidebar a {
+    padding: 8px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    cursor: pointer;
+}
 
-        .sidebar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
+.sidebar a:hover {
+    background-color: #ddd;
+    color: black;
+}
 
-        .sidebar .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            font-size: 36px;
-            color: white;
-            border: none;
-            background: none;
-            cursor: pointer;
-        }
+.sidebar .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 36px;
+    color: white;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
 
-        .open-btn {
-            background: none;
-            color: white;
-            border: none;
-            font-size: 30px;
-            cursor: pointer;
-            position: absolute;
-            left: 20px;
-            top: 15px;
-        }
+.open-btn {
+    background: none;
+    color: white;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    left: 20px;
+    top: 15px;
+}
 
-        #content {
-            padding-top: 120px;
-        }
-    </style>
+#content {
+    padding-top: 120px;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 1500;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Popup */
+.contact-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: white;
+    padding: 35px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.35s;
+    z-index: 2000;
+}
+
+.contact-popup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.close-popup {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.contact-popup input,
+.contact-popup textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+.contact-popup textarea {
+    resize: none;
+    height: 120px;
+}
+
+.contact-popup button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #00c6ff, #3a7bd5);
+    color: white;
+    cursor: pointer;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: #3a7bd5;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    transition: 0.4s;
+    z-index: 3000;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+</style>
 </head>
 
 <body>
 
-    <header class="bandeau">
-        <h1>DES BOUTONS DE MERDE !</h1>
-        <button class="open-btn" onclick="toggleSidebar()">☰</button>
-    </header>
+<header class="bandeau">
+    <h1>DES BOUTONS DE MERDE !</h1>
+    <button class="open-btn" onclick="toggleSidebar()">☰</button>
+</header>
 
-    <div id="sidebar" class="sidebar">
-        <button class="close-btn" onclick="toggleSidebar()">×</button>
-        <a href="index.html">Bienvenue !</a>
-        <a href="lesboutons.html">Les boutons de merde !</a>
-        <a href="videodujour.html">Vidéos du jour</a>
-    </div>
+<div id="overlay" class="overlay" onclick="closeAll()"></div>
 
-    <div id="content">
+<div id="sidebar" class="sidebar">
+    <button class="close-btn" onclick="toggleSidebar()">×</button>
+    <a href="index.html">Bienvenue !</a>
+    <a href="lesboutons.html">Les boutons de merde !</a>
+    <a href="videodujour.html">Vidéos du jour</a>
+    <a onclick="openContact()">Contact</a>
+</div>
 
-        <a href="https://aubergefillot.github.io/joyeuxnoel/" target="_blank" class="btn">
-            <img src="noel.png" style="width:15px;" alt="Noel">
-            Joyeux Noël !
-        </a><p></p>
+<div id="content">
+    <!-- TES BOUTONS EXISTANTS ICI (inchangés) -->
+</div>
 
-        <a href="https://www.apple.com/fr/" target="_blank" class="btn">
-            <img src="apple.png" style="width:15px;" alt="Apple">
-            Apple
-        </a><p></p>
+<!-- Toast -->
+<div id="toast" class="toast">✅ Message envoyé !</div>
 
-        <a href="https://www.chatgpt.com" target="_blank" class="btn">
-            <img src="chatgpt.png" style="width:15px;" alt="ChatGPT">
-            Le chat il a pété
-        </a><p></p>
+<!-- Popup -->
+<div id="contactPopup" class="contact-popup">
+    <button class="close-popup" onclick="closeContact()">✕</button>
+    <h2>Contacte-moi</h2>
+    <form id="contactForm">
+        <input type="text" name="name" placeholder="Ton nom" required>
+        <input type="email" name="email" placeholder="Ton email" required>
+        <textarea name="message" placeholder="Ton message..." required></textarea>
+        <input type="text" name="_gotcha" style="display:none">
+        <button type="submit">Envoyer 🚀</button>
+    </form>
+</div>
 
-        <a href="https://www.youtube.com" target="_blank" class="btn">
-            <img src="ytb.png" style="width:15px;" alt="YouTube">
-            YTB
-        </a><p></p>
+<script>
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const popup = document.getElementById("contactPopup");
+const form = document.getElementById("contactForm");
+const toast = document.getElementById("toast");
 
-        <a href="https://www.myinstants.com" target="_blank" class="btn">
-            <img src="myinstants.png" style="width:15px;" alt="MyInstants">
-            MyInstants
-        </a><p></p>
+function toggleSidebar() {
+    sidebar.classList.toggle("active");
+}
 
-        <a href="https://www.veck.io" target="_blank" class="btn">
-            <img src="veckio.png" style="width:15px;" alt="Veck.io">
-            Je veux du FPS
-        </a><p></p>
+function openContact() {
+    sidebar.classList.remove("active");
+    popup.classList.add("active");
+    overlay.classList.add("active");
+}
 
-        <a href="https://www.venge.io" target="_blank" class="btn">
-            <img src="vengeio.png" style="width:15px;" alt="Venge.io">
-            Re-venge ?
-        </a><p></p>
+function closeContact() {
+    popup.classList.remove("active");
+    overlay.classList.remove("active");
+}
 
-        <a href="https://www.poki.com" target="_blank" class="btn">
-            <img src="poki.png" style="width:15px;" alt="Poki">
-            Ferme la porte y'a la Poki dans l'side
-        </a><p></p>
+function closeAll() {
+    closeContact();
+}
 
-        <a href="https://www.ikea.fr" target="_blank" class="btn">
-            <img src="ikea.png" style="width:25px;" alt="Ikea">
-            IKEA
-        </a><p></p>
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeAll();
+});
 
-        <a href="https://www.boulanger.fr" target="_blank" class="btn">
-            <img src="boulanger.png" style="width:85px;" alt="Boulanger">
-            La boulangerie de la tech
-        </a><p></p>
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const data = new FormData(form);
 
-    </div>
+    await fetch("https://formspree.io/f/xnjbywdk", {
+        method: "POST",
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    });
 
-    <script>
-        function toggleSidebar() {
-            var sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("active");
-        }
-    </script>
+    form.reset();
+    closeContact();
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+});
+</script>
 
 </body>
 </html>
-
-
-
-
-
-

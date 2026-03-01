@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DAMN</title>
 
-<!-- Manifest PWA -->
 <link rel="manifest" href="manifest.json">
 
-<!-- PWA / iPhone -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="DAMN">
@@ -16,7 +14,6 @@
 <meta name="theme-color" content="#6a7d5e">
 
 <style>
-/* --- Styles identiques à ton précédent code --- */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -28,6 +25,7 @@ body {
     margin: 0;
     padding-top: 80px;
 }
+
 .btn {
     display: inline-block;
     padding: 15px 30px;
@@ -39,10 +37,12 @@ body {
     font-size: 18px;
     transition: all 0.3s ease;
 }
+
 .btn:hover {
     filter: brightness(1.1);
     box-shadow: 0 0 15px rgba(0,198,255,0.6);
 }
+
 .bandeau {
     width: 100%;
     background-color: #6a7d5e;
@@ -53,27 +53,28 @@ body {
     text-align: center;
     z-index: 10;
 }
+
 .bandeau h1 {
     margin: 0;
     color: white;
     font-size: 24px;
 }
+
 .overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.5);
     opacity: 0;
     visibility: hidden;
     transition: 0.3s ease;
     z-index: 500;
 }
+
 .overlay.active {
     opacity: 1;
     visibility: visible;
 }
+
 .sidebar {
     height: 100%;
     width: 260px;
@@ -88,9 +89,11 @@ body {
     flex-direction: column;
     justify-content: space-between;
 }
+
 .sidebar.active {
     left: 0;
 }
+
 .sidebar a {
     padding: 12px 20px;
     text-decoration: none;
@@ -98,10 +101,13 @@ body {
     color: white;
     display: block;
     transition: 0.3s;
+    cursor: pointer;
 }
+
 .sidebar a:hover {
     background-color: rgba(255,255,255,0.2);
 }
+
 .sidebar .close-btn {
     position: absolute;
     top: 10px;
@@ -112,6 +118,7 @@ body {
     background: none;
     cursor: pointer;
 }
+
 .open-btn {
     background: none;
     color: white;
@@ -122,20 +129,103 @@ body {
     left: 20px;
     top: 15px;
 }
+
 .color-picker-container {
     padding: 15px;
     text-align: left;
     color: white;
     font-size: 14px;
 }
+
 .color-picker-container input {
     width: 100%;
     height: 35px;
     border: none;
     cursor: pointer;
 }
+
 #content {
     padding-top: 120px;
+}
+
+/* ================= POPUP CONTACT ================= */
+
+.contact-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: white;
+    padding: 35px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.35s cubic-bezier(.68,-0.55,.27,1.55);
+    z-index: 2000;
+}
+
+.contact-popup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.close-popup {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.contact-popup input,
+.contact-popup textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.contact-popup textarea {
+    resize: none;
+    height: 120px;
+}
+
+.contact-popup button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #00c6ff, #3a7bd5);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: #3a7bd5;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: 0.4s;
+    z-index: 3000;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
 }
 </style>
 </head>
@@ -147,15 +237,15 @@ body {
     <button class="open-btn" onclick="toggleSidebar()">☰</button>
 </header>
 
-<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+<div id="overlay" class="overlay" onclick="closeAll()"></div>
 
 <div id="sidebar" class="sidebar">
     <div>
         <button class="close-btn" onclick="closeSidebar()">×</button>
-        <!-- Lien vers la page principale -->
         <a href="index.html">Bienvenue !</a>
         <a href="lesboutons.html">Les boutons de merde !</a>
         <a href="videodujour.html">Vidéos du jour</a>
+        <a onclick="openContact()">Contact</a>
     </div>
 
     <div class="color-picker-container">
@@ -165,13 +255,35 @@ body {
 </div>
 
 <div id="content">
-    <a href="lesboutons.html" class="btn"><img src="noel.png" style="width:15px;" alt="Noel">LES BOUTONS DE MERDE !</a><p></p>
+    <a href="lesboutons.html" class="btn">
+        <img src="noel.png" style="width:15px;" alt="Noel">
+        LES BOUTONS DE MERDE !
+    </a>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast">✅ Message envoyé !</div>
+
+<!-- Popup Contact -->
+<div id="contactPopup" class="contact-popup">
+    <button class="close-popup" onclick="closeContact()">✕</button>
+    <h2>Contacte-moi</h2>
+    <form id="contactForm">
+        <input type="text" name="name" placeholder="Ton nom" required>
+        <input type="email" name="email" placeholder="Ton email" required>
+        <textarea name="message" placeholder="Ton message..." required></textarea>
+        <input type="text" name="_gotcha" style="display:none">
+        <button type="submit">Envoyer 🚀</button>
+    </form>
 </div>
 
 <script>
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("overlay");
 const colorPicker = document.getElementById("colorPicker");
+const popup = document.getElementById("contactPopup");
+const form = document.getElementById("contactForm");
+const toast = document.getElementById("toast");
 
 function toggleSidebar() {
     sidebar.classList.toggle("active");
@@ -183,16 +295,46 @@ function closeSidebar() {
     overlay.classList.remove("active");
 }
 
-// Changement de couleur dynamique
+function openContact() {
+    closeSidebar();
+    popup.classList.add("active");
+    overlay.classList.add("active");
+}
+
+function closeContact() {
+    popup.classList.remove("active");
+    overlay.classList.remove("active");
+}
+
+function closeAll() {
+    closeSidebar();
+    closeContact();
+}
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeAll();
+});
+
 colorPicker.addEventListener("input", function() {
     sidebar.style.backgroundColor = this.value;
+});
+
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    await fetch("https://formspree.io/f/xnjbywdk", {
+        method: "POST",
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    });
+
+    form.reset();
+    closeContact();
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
 });
 </script>
 
 </body>
 </html>
-
-
-
-
-

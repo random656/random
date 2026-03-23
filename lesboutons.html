@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DAMN</title>
-
-<meta name="color-scheme" content="light dark">
+<title>DAMN - Boutons</title>
 
 <style>
 body {
@@ -13,13 +11,8 @@ body {
     text-align: center;
     background-color: #6a7d5e;
     color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
     margin: 0;
-    padding-top: 80px;
-    transition: 0.3s;
+    padding-top: 120px;
 }
 
 /* HEADER */
@@ -31,15 +24,13 @@ body {
     top: 0;
     left: 0;
     z-index: 10;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: white;
 }
 
 .open-btn {
     position: absolute;
     left: 15px;
+    top: 15px;
     font-size: 30px;
     background: none;
     border: none;
@@ -47,48 +38,44 @@ body {
     cursor: pointer;
 }
 
-/* BOUTON THEME */
-.theme-btn {
-    position: absolute;
-    right: 15px;
-    font-size: 22px;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    transition: transform 0.4s;
-}
-
-.theme-btn.rotate {
-    transform: rotate(360deg) scale(1.2);
-}
-
-.theme-btn:active {
-    transform: scale(0.85);
-}
-
-/* BOUTONS */
+/* BUTTONS */
 .btn {
     display: inline-block;
     padding: 15px 30px;
     margin: 15px;
     background: linear-gradient(90deg, #00c6ff, #3a7bd5);
     color: white;
-    border-radius: 12px;
     text-decoration: none;
+    border-radius: 12px;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 15px rgba(0,198,255,0.6);
+}
+
+/* CONTENT */
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* SIDEBAR */
 .sidebar {
+    height: 100%;
+    width: 260px;
     position: fixed;
     left: -260px;
     top: 0;
-    width: 260px;
-    height: 100%;
-    background: #333;
-    transition: 0.3s;
+    background-color: #333;
     padding-top: 60px;
+    transition: 0.3s;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar.active {
@@ -96,9 +83,15 @@ body {
 }
 
 .sidebar a {
-    display: block;
-    padding: 12px;
+    padding: 12px 20px;
+    text-decoration: none;
+    font-size: 18px;
     color: white;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255,255,255,0.2);
 }
 
 .close-btn {
@@ -109,6 +102,7 @@ body {
     background: none;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 /* OVERLAY */
@@ -125,168 +119,91 @@ body {
     opacity: 1;
     visibility: visible;
 }
-
-/* POPUP */
-.contact-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
-}
-
-.contact-popup.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-/* TOAST */
-.toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    background: #3a7bd5;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 20px;
-    transition: 0.3s;
-}
-
-.toast.show {
-    transform: translateX(-50%) translateY(0);
-}
-
-/* DARK MODE */
-body.dark {
-    background: #1e1e1e;
-    color: white;
-}
-
-body.dark .bandeau {
-    background: #2a2a2a;
-}
-
-body.dark .sidebar {
-    background: #1f1f1f;
-}
-
-body.dark .contact-popup {
-    background: #2b2b2b;
-}
 </style>
 </head>
 
 <body>
 
 <header class="bandeau">
-    <h1>DES BOUTONS DE MERDE !</h1>
     <button class="open-btn" onclick="toggleSidebar()">☰</button>
-    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    <h1>DES BOUTONS DE MERDE !</h1>
 </header>
 
-<div id="overlay" class="overlay" onclick="closeAll()"></div>
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
 
 <div id="sidebar" class="sidebar">
     <button class="close-btn" onclick="toggleSidebar()">×</button>
     <a href="index.html">Accueil</a>
-    <a href="lesboutons.html">Boutons</a>
-    <a onclick="openContact()">Contact</a>
+    <a href="lesboutons.html">Les boutons</a>
+    <a href="videodujour.html">Vidéos</a>
 </div>
 
 <div id="content">
-    <!-- BOUTONS EXEMPLES -->
-    <button class="btn" onclick="showToast('💥 Boom !')">Bouton 1</button>
-    <button class="btn" onclick="showToast('😂 Haha !')">Bouton 2</button>
-    <button class="btn" onclick="showToast('🚀 Go !')">Bouton 3</button>
-</div>
 
-<div id="toast" class="toast"></div>
+    <a href="https://aubergefillot.github.io/joyeuxnoel/" target="_blank" class="btn">
+        <img src="noel.png" style="width:15px;" alt="Noel">
+        Joyeux Noël !
+    </a>
 
-<div id="contactPopup" class="contact-popup">
-    <button onclick="closeContact()">✕</button>
-    <h2>Contact</h2>
-    <form id="contactForm">
-        <input type="text" required placeholder="Nom">
-        <input type="email" required placeholder="Email">
-        <textarea required placeholder="Message"></textarea>
-        <button type="submit">Envoyer</button>
-    </form>
+    <a href="https://www.apple.com/fr/" target="_blank" class="btn">
+        <img src="apple.png" style="width:15px;" alt="Apple">
+        Apple
+    </a>
+
+    <a href="https://www.chatgpt.com" target="_blank" class="btn">
+        <img src="chatgpt.png" style="width:15px;" alt="ChatGPT">
+        Le chat il a pété
+    </a>
+
+    <a href="https://www.youtube.com" target="_blank" class="btn">
+        <img src="ytb.png" style="width:15px;" alt="YouTube">
+        YTB
+    </a>
+
+    <a href="https://www.google.com/search?q=fuck+you" target="_blank" class="btn">
+        <img src="pi.png" style="width:15px;" alt="?">    
+        ???
+    </a>
+
+    <a href="https://www.myinstants.com" target="_blank" class="btn">
+        <img src="myinstants.png" style="width:15px;" alt="MyInstants">
+        MyInstants
+    </a>
+
+    <a href="https://www.veck.io" target="_blank" class="btn">
+        <img src="veckio.png" style="width:15px;" alt="Veck.io">
+        Je veux du FPS
+    </a>
+
+    <a href="https://www.venge.io" target="_blank" class="btn">
+        <img src="vengeio.png" style="width:15px;" alt="Venge.io">
+        Re-venge ?
+    </a>
+
+    <a href="https://www.poki.com" target="_blank" class="btn">
+        <img src="poki.png" style="width:15px;" alt="Poki">
+        Ferme la porte y'a la Poki dans l'side
+    </a>
+
+    <a href="https://www.ikea.fr" target="_blank" class="btn">
+        <img src="ikea.png" style="width:25px;" alt="Ikea">
+        IKEA
+    </a>
+
+    <a href="https://www.boulanger.fr" target="_blank" class="btn">
+        <img src="boulanger.png" style="width:85px;" alt="Boulanger">
+        La boulangerie de la tech
+    </a>
+
 </div>
 
 <script>
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("overlay");
-const popup = document.getElementById("contactPopup");
-const toast = document.getElementById("toast");
-const form = document.getElementById("contactForm");
-const themeBtn = document.getElementById("themeBtn");
 
-/* SIDEBAR */
 function toggleSidebar() {
     sidebar.classList.toggle("active");
     overlay.classList.toggle("active");
-}
-
-function closeAll() {
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-    closeContact();
-}
-
-/* CONTACT */
-function openContact() {
-    popup.classList.add("active");
-    overlay.classList.add("active");
-}
-
-function closeContact() {
-    popup.classList.remove("active");
-    overlay.classList.remove("active");
-}
-
-/* TOAST */
-function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2000);
-}
-
-/* FORM */
-form.addEventListener("submit", function(e) {
-    e.preventDefault();
-    showToast("✅ Envoyé !");
-    form.reset();
-    closeContact();
-});
-
-/* THEME */
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme) {
-    document.body.classList.toggle("dark", savedTheme === "dark");
-} else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    document.body.classList.add("dark");
-}
-
-themeBtn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-
-function toggleTheme() {
-    document.body.classList.toggle("dark");
-    const isDark = document.body.classList.contains("dark");
-
-    themeBtn.classList.add("rotate");
-    setTimeout(() => themeBtn.classList.remove("rotate"), 400);
-
-    themeBtn.textContent = isDark ? "☀️" : "🌙";
-
-    localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 </script>
 

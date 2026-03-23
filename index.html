@@ -38,7 +38,6 @@ body {
     font-size: 24px;
 }
 
-/* BUTTON HEADER */
 .open-btn {
     position: absolute;
     left: 15px;
@@ -142,7 +141,7 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: 0.3s;
-    z-index: 500; /* Overlay sous la sidebar */
+    z-index: 500;
 }
 
 .overlay.active {
@@ -158,7 +157,7 @@ body {
     height: 100%;
     border: none;
     display: none;
-    z-index: 2000; /* Popup contact au-dessus de tout */
+    z-index: 2000;
 }
 
 #contactFrame.active {
@@ -198,9 +197,12 @@ body.dark .btn {
 <!-- SIDEBAR -->
 <div id="sidebar" class="sidebar">
     <button class="close-btn" onclick="toggleSidebar()">×</button>
+
     <a href="index.html">Bienvenue !</a>
     <a href="lesboutons.html">Les boutons</a>
     <a href="videodujour.html">Vidéos du jour</a>
+
+    <!-- IMPORTANT -->
     <a onclick="openContact()">Contact</a>
 
     <div class="color-picker-container">
@@ -209,12 +211,12 @@ body.dark .btn {
     </div>
 </div>
 
-<!-- CONTENU -->
+<!-- CONTENT -->
 <div id="content">
     <a href="lesboutons.html" class="btn">Accéder aux boutons</a>
 </div>
 
-<!-- IFRAME POPUP CONTACT -->
+<!-- POPUP CONTACT -->
 <iframe id="contactFrame" src="contact.html"></iframe>
 
 <script>
@@ -232,6 +234,7 @@ function toggleSidebar() {
 
 /* CONTACT */
 function openContact() {
+    sidebar.classList.remove("active");   // ✅ ferme sidebar
     frame.classList.add("active");
     overlay.classList.add("active");
 }
@@ -239,7 +242,6 @@ function openContact() {
 function closeContact() {
     frame.classList.remove("active");
     overlay.classList.remove("active");
-    sidebar.classList.remove("active");
 }
 
 /* ESC */
